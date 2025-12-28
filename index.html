@@ -1,0 +1,494 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Escala - Biocor (Static)</title>
+  <style>
+    body{font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;margin:0;padding:16px;background:#f8fafc;color:#0f172a}
+    .container{max-width:980px;margin:0 auto}
+    header{display:flex;align-items:center;justify-content:space-between}
+    pre{background:#0f172a;color:#e6eef8;padding:12px;border-radius:6px;overflow:auto}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+    .card{background:white;padding:12px;border-radius:8px;box-shadow:0 1px 2px rgba(2,6,23,.05);border:1px solid #e6eef8}
+    button{background:#0ea5a4;color:white;border:0;padding:8px 10px;border-radius:6px;cursor:pointer}
+    button.secondary{background:#64748b}
+    .small{font-size:13px;color:#475569}
+    .date{font-weight:700}
+    table{width:100%;border-collapse:collapse}
+    td,th{padding:6px;border-bottom:1px solid #f1f5f9;text-align:left}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <h1>Escala (Static) — Biocor</h1>
+        <div class="small">Modo público estático para hospedar no GitHub Pages. Dados locais + opção de usar Firebase/Gemini (chaves embutidas).</div>
+      </div>
+      <div>
+        <button id="btnImport">Importar CSV de Dezembro</button>
+        <button id="btnExport" class="secondary">Exportar JSON</button>
+      </div>
+    </header>
+
+    <section style="margin-top:16px">
+      <div class="card">
+        <strong>Config (embutida)</strong>
+        <pre id="configBlock"></pre>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <strong>Resumo por dia</strong>
+          <div id="daysContainer"></div>
+        </div>
+        <div class="card">
+          <strong>Dados brutos (CSV)</strong>
+          <textarea id="raw" style="width:100%;height:320px;margin-top:8px;font-family:monospace">2025-12-01,Diurno,Dra. Juliana
+2025-12-01,Diurno,Dr. Paulo Vitor
+2025-12-01,Horizontal_manha,Dr. Fabiano
+2025-12-01,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-01,Noturno,Dra. Clara
+2025-12-01,Noturno,Dra. Fernanda
+2025-12-02,Diurno,Dra. Thaynara
+2025-12-02,Diurno,Dr. Felipe
+2025-12-02,Horizontal_manha,Dr. Fabiano
+2025-12-02,Horizontal_tarde,Dra. Clara
+2025-12-02,Noturno,Dra. Gabriela Ourivio
+2025-12-02,Noturno,Dra. Cassia Caetano
+2025-12-03,Diurno,Dr. Paulo Vitor
+2025-12-03,Diurno,Dr. Renan
+2025-12-03,Horizontal_manha,Dr. Sérgio
+2025-12-03,Horizontal_tarde,Dr. Luiz
+2025-12-03,Noturno,Dra. Ana Paula
+2025-12-03,Noturno,Dra. Clara
+2025-12-04,Diurno,Dra. Patrícia F
+2025-12-04,Diurno,Dra. Juliana
+2025-12-04,Horizontal_manha,Dr. Sérgio
+2025-12-04,Horizontal_tarde,Dr. Luiz
+2025-12-04,Noturno,Dr. Wellington
+2025-12-04,Noturno,Dr. Felipe
+2025-12-05,Diurno,Dra. Bruna
+2025-12-05,Diurno,Dr. Sérgio
+2025-12-05,Horizontal_manha,Dr. Paulo Vitor
+2025-12-05,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-05,Noturno,Dra. Larissa
+2025-12-05,Noturno,Dr. João Ataide
+2025-12-06,Diurno,Dra. Natalia Araujo
+2025-12-06,Diurno,Dra. Bruna
+2025-12-06,Noturno,Dra. Gabriela Ourivio
+2025-12-06,Noturno,Dra. Thaynara
+2025-12-07,Diurno,Dra. Natalia Araujo
+2025-12-07,Diurno,Dr. Sérgio Diniz
+2025-12-07,Noturno,Dra. Fernanda
+2025-12-07,Noturno,Dr. Felipe
+2025-12-08,Diurno,Dr. Rafael
+2025-12-08,Diurno,Dr. Paulo Vitor
+2025-12-08,Horizontal_manha,Dr. Fabiano
+2025-12-08,Horizontal_tarde,Dra. Clara
+2025-12-08,Noturno,Dra. Cassia
+2025-12-08,Noturno,Dra. Ana Paula
+2025-12-09,Diurno,Dra. Thaynara
+2025-12-09,Diurno,Dr. Felipe
+2025-12-09,Horizontal_manha,Dr. Fabiano
+2025-12-09,Horizontal_tarde,Dra. Clara
+2025-12-09,Noturno,Dra. Rafaela
+2025-12-09,Noturno,Dra. Cassia Caetano
+2025-12-10,Diurno,Dr. Paulo Vitor
+2025-12-10,Diurno,Dr. Renan
+2025-12-10,Horizontal_manha,Dr. Sérgio
+2025-12-10,Horizontal_tarde,Dr. Luiz
+2025-12-10,Noturno,Dra. Ana Paula
+2025-12-10,Noturno,Dra. Clara
+2025-12-11,Diurno,Dra. Patrícia F
+2025-12-11,Diurno,Dra. Juliana
+2025-12-11,Horizontal_manha,Dr. Sérgio
+2025-12-11,Horizontal_tarde,Dr. Luiz
+2025-12-11,Noturno,Dra. Fernanda Freire
+2025-12-11,Noturno,Dr. Felipe
+2025-12-12,Diurno,Dra. Patrícia
+2025-12-12,Diurno,Dra. Bruna
+2025-12-12,Horizontal_manha,Dr. Paulo Vitor
+2025-12-12,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-12,Noturno,Dra. Maria Mameluque
+2025-12-12,Noturno,Dra. Marina Eto
+2025-12-13,Diurno,Dr. Felipe
+2025-12-13,Diurno,Dra. Patrícia F
+2025-12-13,Noturno,Dra. Gabriela Gois
+2025-12-13,Noturno,Dr. Fabiano
+2025-12-14,Diurno,Dra. Clara
+2025-12-14,Diurno,Dra. Leticia Batista
+2025-12-14,Noturno,Dr. Guilherme Paiva
+2025-12-14,Noturno,Dra. Juliana
+2025-12-15,Diurno,Dr. Rafael Prates
+2025-12-15,Diurno,Dr. Paulo Vitor
+2025-12-15,Horizontal_manha,Dr. Fabiano
+2025-12-15,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-15,Noturno,Dra. Fernanda
+2025-12-15,Noturno,Dra. Clara
+2025-12-16,Diurno,Dra. Thaynara
+2025-12-16,Diurno,Dr. Felipe Ferrari
+2025-12-16,Horizontal_manha,Dr. Fabiano
+2025-12-16,Horizontal_tarde,Dra. Clara
+2025-12-16,Noturno,Dra. Gabriela Ourivio
+2025-12-16,Noturno,Dra. Cassia
+2025-12-17,Diurno,Dr. Paulo Vitor
+2025-12-17,Diurno,Dr. Renan
+2025-12-17,Horizontal_manha,Dr. Sérgio
+2025-12-17,Horizontal_tarde,Dr. Luiz
+2025-12-17,Noturno,Dra. Ana Paula
+2025-12-17,Noturno,Dra. Clara
+2025-12-18,Diurno,Dra. Patrícia
+2025-12-18,Diurno,Dra. Juliana
+2025-12-18,Horizontal_manha,Dr. Sérgio
+2025-12-18,Horizontal_tarde,Dr. Luiz
+2025-12-18,Noturno,Dr. Wellington
+2025-12-18,Noturno,Dr. Felipe
+2025-12-19,Diurno,Dra. Bruna
+2025-12-19,Diurno,Dr. Sérgio
+2025-12-19,Horizontal_manha,Dr. Paulo Vitor
+2025-12-19,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-19,Noturno,Dra. Gabriela Rangel
+2025-12-19,Noturno,Dra. Juliana
+2025-12-20,Diurno,Dr. Renan
+2025-12-20,Diurno,Dra. Ana Paula
+2025-12-20,Noturno,Dra. Rafaela
+2025-12-20,Noturno,Dra. Thaynara
+2025-12-21,Diurno,Dra. Ana Paula
+2025-12-21,Diurno,Dra. Isabela Nogueira
+2025-12-21,Noturno,Dra. Isabela Gomes
+2025-12-21,Noturno,Dra. Clara
+2025-12-22,Diurno,Dra. Juliana
+2025-12-22,Diurno,Dr. Paulo Vitor
+2025-12-22,Horizontal_manha,Dr. Fabiano
+2025-12-22,Horizontal_tarde,Dra. Clara
+2025-12-22,Noturno,Dra. Cassia
+2025-12-22,Noturno,Dra. Ana Paula
+2025-12-23,Diurno,Dra. Thaynara
+2025-12-23,Diurno,Dr. Felipe
+2025-12-23,Horizontal_manha,Dr. Fabiano
+2025-12-23,Horizontal_tarde,Dra. Clara
+2025-12-23,Noturno,Dra. Rafaela
+2025-12-23,Noturno,Dra. Cassia Caetano
+2025-12-24,Diurno,Dr. Paulo Vitor
+2025-12-24,Diurno,Dr. Renan
+2025-12-24,Horizontal_manha,Dr. Sérgio
+2025-12-24,Horizontal_tarde,Dr. Luiz
+2025-12-24,Noturno,Dra. Ana Paula
+2025-12-24,Noturno,Dra. Clara
+2025-12-25,Diurno,Dra. Patrícia F
+2025-12-25,Diurno,Dra. Juliana
+2025-12-25,Horizontal_manha,Dr. Sérgio
+2025-12-25,Horizontal_tarde,Dr. Luiz
+2025-12-25,Noturno,Dra. Fernanda Freire
+2025-12-25,Noturno,Dr. Felipe
+2025-12-26,Diurno,Dra. Patrícia
+2025-12-26,Diurno,Dra. Bruna
+2025-12-26,Horizontal_manha,Dr. Paulo Vitor
+2025-12-26,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-26,Noturno,Dra. Cassia
+2025-12-26,Noturno,Dra. Gabriela Gois
+2025-12-27,Diurno,Dra. Maria Mameluque
+2025-12-27,Diurno,Dra. Daniela Alves
+2025-12-27,Noturno,Dra. Isabela Gomes
+2025-12-27,Noturno,Dra. Larissa
+2025-12-28,Diurno,Dr. Paulo Vitor
+2025-12-28,Diurno,Dr. Hugo Duarte
+2025-12-28,Noturno,Dra. Cassia Caetano
+2025-12-28,Noturno,Dra. Rafaela
+2025-12-29,Diurno,Dra. Juliana
+2025-12-29,Diurno,Dr. Paulo Vitor
+2025-12-29,Horizontal_manha,Dr. Fabiano
+2025-12-29,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-29,Noturno,Dra. Clara
+2025-12-29,Noturno,Dra. Fernanda
+2025-12-30,Diurno,Dra. Thaynara
+2025-12-30,Diurno,Dr. Felipe
+2025-12-30,Horizontal_manha,Dr. Fabiano
+2025-12-30,Horizontal_tarde,Dra. Clara
+2025-12-30,Noturno,Dra. Gabriela Ourivio
+2025-12-30,Noturno,Dra. Cassia Caetano
+2025-12-31,Diurno,Dr. Paulo Vitor
+2025-12-31,Diurno,Dr. Renan
+2025-12-31,Horizontal_manha,Dr. Sérgio
+2025-12-31,Horizontal_tarde,Dr. Luiz
+2025-12-31,Noturno,Dra. Ana Paula
+2025-12-31,Noturno,Dra. Clara</textarea>
+        </div>
+      </div>
+
+      <div style="margin-top:12px" class="card">
+        <strong>Console</strong>
+        <div id="log" style="height:120px;overflow:auto;background:#0f172a;color:#e6eef8;padding:8px;border-radius:6px;font-family:monospace"></div>
+      </div>
+
+    </section>
+  </div>
+
+  <script>
+    // --- Mantendo as chaves expostas conforme solicitado ---
+    const FIREBASE_CONFIG = {
+      apiKey: "AIzaSyDcAIe6qMtzclRsvmKzqnNySckT6h0nD1g",
+      authDomain: "biocor-escala.firebaseapp.com",
+      projectId: "biocor-escala",
+      storageBucket: "biocor-escala.firebasestorage.app",
+      messagingSenderId: "576006517338",
+      appId: "1:576006517338:web:fbfbe3d05cef40a8809e63",
+      measurementId: "G-7SSMJ2TH0N"
+    };
+
+    const GEMINI_API_KEY = "AIzaSyBfKB6KbbL3W2WZkl9ugPdKdwp74f30at0";
+
+    const DECEMBER_DATA_RAW = `2025-12-01,Diurno,Dra. Juliana
+2025-12-01,Diurno,Dr. Paulo Vitor
+2025-12-01,Horizontal_manha,Dr. Fabiano
+2025-12-01,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-01,Noturno,Dra. Clara
+2025-12-01,Noturno,Dra. Fernanda
+2025-12-02,Diurno,Dra. Thaynara
+2025-12-02,Diurno,Dr. Felipe
+2025-12-02,Horizontal_manha,Dr. Fabiano
+2025-12-02,Horizontal_tarde,Dra. Clara
+2025-12-02,Noturno,Dra. Gabriela Ourivio
+2025-12-02,Noturno,Dra. Cassia Caetano
+2025-12-03,Diurno,Dr. Paulo Vitor
+2025-12-03,Diurno,Dr. Renan
+2025-12-03,Horizontal_manha,Dr. Sérgio
+2025-12-03,Horizontal_tarde,Dr. Luiz
+2025-12-03,Noturno,Dra. Ana Paula
+2025-12-03,Noturno,Dra. Clara
+2025-12-04,Diurno,Dra. Patrícia F
+2025-12-04,Diurno,Dra. Juliana
+2025-12-04,Horizontal_manha,Dr. Sérgio
+2025-12-04,Horizontal_tarde,Dr. Luiz
+2025-12-04,Noturno,Dr. Wellington
+2025-12-04,Noturno,Dr. Felipe
+2025-12-05,Diurno,Dra. Bruna
+2025-12-05,Diurno,Dr. Sérgio
+2025-12-05,Horizontal_manha,Dr. Paulo Vitor
+2025-12-05,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-05,Noturno,Dra. Larissa
+2025-12-05,Noturno,Dr. João Ataide
+2025-12-06,Diurno,Dra. Natalia Araujo
+2025-12-06,Diurno,Dra. Bruna
+2025-12-06,Noturno,Dra. Gabriela Ourivio
+2025-12-06,Noturno,Dra. Thaynara
+2025-12-07,Diurno,Dra. Natalia Araujo
+2025-12-07,Diurno,Dr. Sérgio Diniz
+2025-12-07,Noturno,Dra. Fernanda
+2025-12-07,Noturno,Dr. Felipe
+2025-12-08,Diurno,Dr. Rafael
+2025-12-08,Diurno,Dr. Paulo Vitor
+2025-12-08,Horizontal_manha,Dr. Fabiano
+2025-12-08,Horizontal_tarde,Dra. Clara
+2025-12-08,Noturno,Dra. Cassia
+2025-12-08,Noturno,Dra. Ana Paula
+2025-12-09,Diurno,Dra. Thaynara
+2025-12-09,Diurno,Dr. Felipe
+2025-12-09,Horizontal_manha,Dr. Fabiano
+2025-12-09,Horizontal_tarde,Dra. Clara
+2025-12-09,Noturno,Dra. Rafaela
+2025-12-09,Noturno,Dra. Cassia Caetano
+2025-12-10,Diurno,Dr. Paulo Vitor
+2025-12-10,Diurno,Dr. Renan
+2025-12-10,Horizontal_manha,Dr. Sérgio
+2025-12-10,Horizontal_tarde,Dr. Luiz
+2025-12-10,Noturno,Dra. Ana Paula
+2025-12-10,Noturno,Dra. Clara
+2025-12-11,Diurno,Dra. Patrícia F
+2025-12-11,Diurno,Dra. Juliana
+2025-12-11,Horizontal_manha,Dr. Sérgio
+2025-12-11,Horizontal_tarde,Dr. Luiz
+2025-12-11,Noturno,Dra. Fernanda Freire
+2025-12-11,Noturno,Dr. Felipe
+2025-12-12,Diurno,Dra. Patrícia
+2025-12-12,Diurno,Dra. Bruna
+2025-12-12,Horizontal_manha,Dr. Paulo Vitor
+2025-12-12,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-12,Noturno,Dra. Maria Mameluque
+2025-12-12,Noturno,Dra. Marina Eto
+2025-12-13,Diurno,Dr. Felipe
+2025-12-13,Diurno,Dra. Patrícia F
+2025-12-13,Noturno,Dra. Gabriela Gois
+2025-12-13,Noturno,Dr. Fabiano
+2025-12-14,Diurno,Dra. Clara
+2025-12-14,Diurno,Dra. Leticia Batista
+2025-12-14,Noturno,Dr. Guilherme Paiva
+2025-12-14,Noturno,Dra. Juliana
+2025-12-15,Diurno,Dr. Rafael Prates
+2025-12-15,Diurno,Dr. Paulo Vitor
+2025-12-15,Horizontal_manha,Dr. Fabiano
+2025-12-15,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-15,Noturno,Dra. Fernanda
+2025-12-15,Noturno,Dra. Clara
+2025-12-16,Diurno,Dra. Thaynara
+2025-12-16,Diurno,Dr. Felipe Ferrari
+2025-12-16,Horizontal_manha,Dr. Fabiano
+2025-12-16,Horizontal_tarde,Dra. Clara
+2025-12-16,Noturno,Dra. Gabriela Ourivio
+2025-12-16,Noturno,Dra. Cassia
+2025-12-17,Diurno,Dr. Paulo Vitor
+2025-12-17,Diurno,Dr. Renan
+2025-12-17,Horizontal_manha,Dr. Sérgio
+2025-12-17,Horizontal_tarde,Dr. Luiz
+2025-12-17,Noturno,Dra. Ana Paula
+2025-12-17,Noturno,Dra. Clara
+2025-12-18,Diurno,Dra. Patrícia
+2025-12-18,Diurno,Dra. Juliana
+2025-12-18,Horizontal_manha,Dr. Sérgio
+2025-12-18,Horizontal_tarde,Dr. Luiz
+2025-12-18,Noturno,Dr. Wellington
+2025-12-18,Noturno,Dr. Felipe
+2025-12-19,Diurno,Dra. Bruna
+2025-12-19,Diurno,Dr. Sérgio
+2025-12-19,Horizontal_manha,Dr. Paulo Vitor
+2025-12-19,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-19,Noturno,Dra. Gabriela Rangel
+2025-12-19,Noturno,Dra. Juliana
+2025-12-20,Diurno,Dr. Renan
+2025-12-20,Diurno,Dra. Ana Paula
+2025-12-20,Noturno,Dra. Rafaela
+2025-12-20,Noturno,Dra. Thaynara
+2025-12-21,Diurno,Dra. Ana Paula
+2025-12-21,Diurno,Dra. Isabela Nogueira
+2025-12-21,Noturno,Dra. Isabela Gomes
+2025-12-21,Noturno,Dra. Clara
+2025-12-22,Diurno,Dra. Juliana
+2025-12-22,Diurno,Dr. Paulo Vitor
+2025-12-22,Horizontal_manha,Dr. Fabiano
+2025-12-22,Horizontal_tarde,Dra. Clara
+2025-12-22,Noturno,Dra. Cassia
+2025-12-22,Noturno,Dra. Ana Paula
+2025-12-23,Diurno,Dra. Thaynara
+2025-12-23,Diurno,Dr. Felipe
+2025-12-23,Horizontal_manha,Dr. Fabiano
+2025-12-23,Horizontal_tarde,Dra. Clara
+2025-12-23,Noturno,Dra. Rafaela
+2025-12-23,Noturno,Dra. Cassia Caetano
+2025-12-24,Diurno,Dr. Paulo Vitor
+2025-12-24,Diurno,Dr. Renan
+2025-12-24,Horizontal_manha,Dr. Sérgio
+2025-12-24,Horizontal_tarde,Dr. Luiz
+2025-12-24,Noturno,Dra. Ana Paula
+2025-12-24,Noturno,Dra. Clara
+2025-12-25,Diurno,Dra. Patrícia F
+2025-12-25,Diurno,Dra. Juliana
+2025-12-25,Horizontal_manha,Dr. Sérgio
+2025-12-25,Horizontal_tarde,Dr. Luiz
+2025-12-25,Noturno,Dra. Fernanda Freire
+2025-12-25,Noturno,Dr. Felipe
+2025-12-26,Diurno,Dra. Patrícia
+2025-12-26,Diurno,Dra. Bruna
+2025-12-26,Horizontal_manha,Dr. Paulo Vitor
+2025-12-26,Horizontal_tarde,Dr. Paulo Vitor
+2025-12-26,Noturno,Dra. Cassia
+2025-12-26,Noturno,Dra. Gabriela Gois
+2025-12-27,Diurno,Dra. Maria Mameluque
+2025-12-27,Diurno,Dra. Daniela Alves
+2025-12-27,Noturno,Dra. Isabela Gomes
+2025-12-27,Noturno,Dra. Larissa
+2025-12-28,Diurno,Dr. Paulo Vitor
+2025-12-28,Diurno,Dr. Hugo Duarte
+2025-12-28,Noturno,Dra. Cassia Caetano
+2025-12-28,Noturno,Dra. Rafaela
+2025-12-29,Diurno,Dra. Juliana
+2025-12-29,Diurno,Dr. Paulo Vitor
+2025-12-29,Horizontal_manha,Dr. Fabiano
+2025-12-29,Horizontal_tarde,Dra. Maria Mameluque
+2025-12-29,Noturno,Dra. Clara
+2025-12-29,Noturno,Dra. Fernanda
+2025-12-30,Diurno,Dra. Thaynara
+2025-12-30,Diurno,Dr. Felipe
+2025-12-30,Horizontal_manha,Dr. Fabiano
+2025-12-30,Horizontal_tarde,Dra. Clara
+2025-12-30,Noturno,Dra. Gabriela Ourivio
+2025-12-30,Noturno,Dra. Cassia Caetano
+2025-12-31,Diurno,Dr. Paulo Vitor
+2025-12-31,Diurno,Dr. Renan
+2025-12-31,Horizontal_manha,Dr. Sérgio
+2025-12-31,Horizontal_tarde,Dr. Luiz
+2025-12-31,Noturno,Dra. Ana Paula
+2025-12-31,Noturno,Dra. Clara`;
+    
+    // Replace placeholders in textarea
+    document.getElementById('raw').value = DECEMBER_DATA_RAW;
+
+    function log(msg) {
+      const el = document.getElementById('log');
+      el.textContent = (new Date()).toISOString() + ' - ' + msg + '\n' + el.textContent;
+    }
+
+    function parseCSV(raw) {
+      const lines = raw.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+      const items = lines.map(line => {
+        const parts = line.split(/[;,]/).map(p=>p.trim());
+        return { date: parts[0], shift: parts[1], name: parts[2] };
+      });
+      return items;
+    }
+
+    function groupByDate(items) {
+      const map = {};
+      items.forEach(it => {
+        if(!map[it.date]) map[it.date]=[];
+        map[it.date].push(it);
+      });
+      return map;
+    }
+
+    function renderDays() {
+      const raw = document.getElementById('raw').value;
+      const items = parseCSV(raw);
+      const grouped = groupByDate(items);
+      const container = document.getElementById('daysContainer');
+      container.innerHTML = '';
+      Object.keys(grouped).sort().forEach(date => {
+        const card = document.createElement('div');
+        card.style.marginBottom = '8px';
+        card.innerHTML = `<div class="date">${date}</div>`;
+        const table = document.createElement('table');
+        const tbody = document.createElement('tbody');
+        grouped[date].forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td style="width:40%">${row.shift}</td><td>${row.name}</td>`;
+          tbody.appendChild(tr);
+        });
+        table.appendChild(tbody);
+        card.appendChild(table);
+        container.appendChild(card);
+      });
+      log('Renderizado ' + Object.keys(grouped).length + ' dias.');
+    }
+
+    document.getElementById('btnImport').addEventListener('click', () => {
+      // parse from textarea into localStorage
+      const raw = document.getElementById('raw').value;
+      const items = parseCSV(raw);
+      localStorage.setItem('escala_data', JSON.stringify(items));
+      renderDays();
+      log('Importado para localStorage: ' + items.length + ' registros');
+    });
+
+    document.getElementById('btnExport').addEventListener('click', async () => {
+      const data = localStorage.getItem('escala_data') || '[]';
+      try {
+        await navigator.clipboard.writeText(data);
+        log('JSON copiado para a área de transferência.');
+      } catch(e) {
+        // fallback
+        const ta = document.createElement('textarea');
+        ta.value = data; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+        log('JSON copiado (fallback).');
+      }
+    });
+
+    // Show config on page
+    document.getElementById('configBlock').textContent = JSON.stringify({ FIREBASE_CONFIG, GEMINI_API_KEY }, null, 2);
+
+    // Initial render
+    renderDays();
+
+  </script>
+</body>
+</html>
